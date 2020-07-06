@@ -1,0 +1,10 @@
+spring:
+  data:
+    cassandra:
+      contact-points: cassandra
+      port: 9042
+      keyspace-name: message_keyspace
+      schema-action: create_if_not_exists
+      user-name: cassandra
+      password: cassandra
+      entity-base-package: pl.sborowy.messageApp.domain
