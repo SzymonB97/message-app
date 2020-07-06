@@ -1,4 +1,4 @@
-Spring application which communicates with Cassandra database by REST API. Application and database communicate within docker's container. Docker-compose file creates jar file if it not exists, runs Cassandra container and runs application container which is waiting for the Cassandra when it will be ready. After containers start, application creates messages_keyspace (if not exists) and 'messages' table. After that we can do some actions (using REST API):
+Spring application which communicates with Cassandra database by REST API. Application and database works on Docker containers. Docker-compose file creates jar file if it not exists, runs Cassandra container and runs application container which is waiting for the Cassandra when it will be ready. After containers start, application creates messages_keyspace (if not exists) and 'messages' table. After that we can do some actions (using REST API):
  - add message
  - get messages with given email
  - "send" (delete from database) messages with given magic_number
