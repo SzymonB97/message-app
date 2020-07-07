@@ -4,7 +4,7 @@ Spring application which communicates with Cassandra database by REST API. Appli
  - "send" (delete from database) messages with given magic_number
  - shutdown application
 
-Application should automatically remove messages older than 5 min. After shutdown application should drop messages_keyspace from Cassandra.
+Application should automatically remove messages older than 2 min. After shutdown application should drop messages_keyspace from Cassandra.
 
 Example using cURL:
 
