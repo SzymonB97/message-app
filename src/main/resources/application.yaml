@@ -8,3 +8,6 @@ spring:
       user-name: cassandra
       password: cassandra
       entity-base-package: pl.sborowy.messageApp.domain
+  output:
+    ansi:
+      enabled: always
