@@ -2,7 +2,7 @@ package pl.sborowy.messageApp.converters;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import pl.sborowy.messageApp.commands.MessageForm;
+import pl.sborowy.messageApp.model.MessageForm;
 import pl.sborowy.messageApp.domain.Message;
 
 @Component

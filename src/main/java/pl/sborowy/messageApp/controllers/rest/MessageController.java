@@ -10,7 +10,6 @@ import pl.sborowy.messageApp.domain.Message;
 import pl.sborowy.messageApp.services.MessageService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -28,12 +27,10 @@ public class MessageController {
     // --request methods--
     @PostMapping(path = "/message", consumes = MediaType.APPLICATION_JSON_VALUE, headers = {"Content-Type=application/json"})
     public ResponseEntity<Message> save(@RequestBody Message message) {
-        if (!message.getEmail().equals("")
-                && !message.getTitle().equals("")
-                && !message.getContent().equals("")
-                && !String.valueOf(message.getMagicNumber()).equals("")) {
-            Message savedMessage = this.messageService.save(message);
-            return new ResponseEntity<>(savedMessage, HttpStatus.CREATED);
+        Message saveMessage = messageService.save(message);
+
+        if (saveMessage != null) {
+            return new ResponseEntity<>(saveMessage, HttpStatus.CREATED);
         } else {
             throw new HttpClientErrorException(HttpStatus.NO_CONTENT);
         }
@@ -42,10 +39,9 @@ public class MessageController {
     @PostMapping(path = "/send", consumes = MediaType.APPLICATION_JSON_VALUE, headers = {"Content-Type=application/json"})
     public ResponseEntity<String> send(@RequestBody Message messageMagicNumber) {
         int magicNumber = messageMagicNumber.getMagicNumber();
-        Optional<List<Message>> messages = this.messageService.findByMagicNumber(magicNumber);
+        boolean sendResult = messageService.send(magicNumber);
 
-        if (messages.isPresent() && !messages.get().isEmpty()) {
-            messages.get().forEach(message -> this.messageService.delete(message.getId()));
+        if (sendResult) {
             return new ResponseEntity<>("Emails with magic number " + magicNumber + " have been sent.", HttpStatus.ACCEPTED);
         } else {
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
@@ -54,11 +50,11 @@ public class MessageController {
 
     @GetMapping(path = "/messages/{emailValue}")
     @ResponseStatus(value = HttpStatus.FOUND)
-    public List<Message> getByEmail(@PathVariable("emailValue") String email) {
-        Optional<List<Message>> messages = messageService.findByEmail(email);
+    public List<Message> getMessages(@PathVariable("emailValue") String email) {
+        List<Message> messages = messageService.findByEmail(email);
 
-        if (messages.isPresent() && !messages.get().isEmpty()) {
-            return messages.get();
+        if (!messages.isEmpty()) {
+            return messages;
         } else {
             throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
         }

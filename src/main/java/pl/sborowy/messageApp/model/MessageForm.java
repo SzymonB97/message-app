@@ -1,4 +1,4 @@
-package pl.sborowy.messageApp.commands;
+package pl.sborowy.messageApp.model;
 
 import lombok.Getter;
 import lombok.Setter;

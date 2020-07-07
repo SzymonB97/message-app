@@ -8,9 +8,8 @@ import pl.sborowy.messageApp.domain.Message;
 import pl.sborowy.messageApp.repository.MessageRepository;
 import pl.sborowy.messageApp.services.MessageService;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class MessageServiceImpl implements MessageService {
@@ -29,24 +28,43 @@ public class MessageServiceImpl implements MessageService {
     // --public methods--
     @Override
     public Message save(Message message) {
-        InsertOptions insertOptions = InsertOptions.builder().ttl(300).build();
-        operations.insert(message, insertOptions);
+        if (!message.getEmail().equals("")
+                && !message.getTitle().equals("")
+                && !message.getContent().equals("")
+                && !String.valueOf(message.getMagicNumber()).equals("")) {
+            InsertOptions insertOptions = InsertOptions
+                    .builder()
+                    .ttl(120)
+                    .build();
+            operations.insert(message, insertOptions);
 
-        return message;
+            return message;
+        }
+
+        return null;
     }
 
     @Override
-    public void delete(UUID uuid) {
-        messageRepository.deleteById(uuid);
+    public boolean send(int magicNumber) {
+        List<Message> messages = messageRepository.findByMagicNumber(magicNumber);
+
+        if (!messages.isEmpty()) {
+            messages.forEach(message -> messageRepository.deleteById(message.getId()));
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override
-    public Optional<List<Message>> findByMagicNumber(int magicNumber) {
-        return messageRepository.findByMagicNumber(magicNumber);
-    }
+    public List<Message> findByEmail(String email) {
+        List<Message> messages = messageRepository.findByEmail(email);
 
-    @Override
-    public Optional<List<Message>> findByEmail(String email) {
-        return messageRepository.findByEmail(email);
+        if (!messages.isEmpty()) {
+            return messages;
+        }
+
+        return Collections.emptyList();
     }
 }
