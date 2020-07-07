@@ -2,13 +2,18 @@ package pl.sborowy.messageApp.domain;
 
 import com.datastax.driver.core.DataType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.cassandra.core.mapping.*;
 
 import java.util.UUID;
 
+@Getter
+@Setter
 @Table("messages")
 public class Message {
 
+    // --fields--
     @PrimaryKey
     @CassandraType(type = DataType.Name.UUID)
     private UUID id;
@@ -25,6 +30,7 @@ public class Message {
     @JsonProperty("magic_number")
     private int magicNumber;
 
+    // --constructors--
     public Message() {
         this.id = UUID.randomUUID();
     }
@@ -34,46 +40,6 @@ public class Message {
         this.email = email;
         this.title = title;
         this.content = content;
-        this.magicNumber = magicNumber;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public int getMagicNumber() {
-        return magicNumber;
-    }
-
-    public void setMagicNumber(int magicNumber) {
         this.magicNumber = magicNumber;
     }
 }
