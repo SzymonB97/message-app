@@ -11,15 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api")
 public class ShutdownController implements ApplicationContextAware {
 
+    // --fields--
     private ApplicationContext context;
 
-    @PostMapping(path = "/shutdown")
-    public void shutdownContext() {
-        ((ConfigurableApplicationContext) context).close();
-    }
-
+    // --public methods--
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.context = applicationContext;
+    }
+
+    // --request methods--
+    @PostMapping(path = "/shutdown")
+    public void shutdownContext() {
+        ((ConfigurableApplicationContext) context).close();
     }
 }

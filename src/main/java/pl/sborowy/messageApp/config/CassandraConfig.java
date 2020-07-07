@@ -15,6 +15,7 @@ import java.util.List;
 @Configuration
 public class CassandraConfig extends AbstractCassandraConfiguration {
 
+    // --fields--
     @Value("${spring.data.cassandra.port}")
     private int port;
 
@@ -33,6 +34,22 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     @Value("${spring.data.cassandra.entity-base-package}")
     private String entityBasePackage;
 
+    // --beans--
+    @Bean
+    @Override
+    public CassandraCqlClusterFactoryBean cluster() {
+        CassandraCqlClusterFactoryBean bean = new CassandraCqlClusterFactoryBean();
+        bean.setKeyspaceCreations(getKeyspaceCreations());
+        bean.setPort(port);
+        bean.setContactPoints(contactPoints);
+        bean.setUsername(userName);
+        bean.setPassword(password);
+        bean.setJmxReportingEnabled(false);
+
+        return bean;
+    }
+
+    // --public methods--
     @Override
     protected int getPort() {
         return port;
@@ -74,19 +91,5 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     @Override
     protected List<String> getShutdownScripts() {
         return Collections.singletonList("DROP KEYSPACE IF EXISTS " + keySpace + ";");
-    }
-
-    @Bean
-    @Override
-    public CassandraCqlClusterFactoryBean cluster() {
-        CassandraCqlClusterFactoryBean bean = new CassandraCqlClusterFactoryBean();
-        bean.setKeyspaceCreations(getKeyspaceCreations());
-        bean.setPort(port);
-        bean.setContactPoints(contactPoints);
-        bean.setUsername(userName);
-        bean.setPassword(password);
-        bean.setJmxReportingEnabled(false);
-
-        return bean;
     }
 }

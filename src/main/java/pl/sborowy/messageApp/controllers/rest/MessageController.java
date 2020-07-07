@@ -16,13 +16,16 @@ import java.util.Optional;
 @RequestMapping(value = "/api")
 public class MessageController {
 
+    // --fields--
     private final MessageService messageService;
 
+    // --constructors--
     @Autowired
     public MessageController(MessageService messageService) {
         this.messageService = messageService;
     }
 
+    // --request methods--
     @PostMapping(path = "/message", consumes = MediaType.APPLICATION_JSON_VALUE, headers = {"Content-Type=application/json"})
     public ResponseEntity<Message> save(@RequestBody Message message) {
         if (!message.getEmail().equals("")

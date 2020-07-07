@@ -15,15 +15,18 @@ import java.util.UUID;
 @Service
 public class MessageServiceImpl implements MessageService {
 
+    // --fields--
     private final MessageRepository messageRepository;
     private final CassandraOperations operations;
 
+    // --constructors--
     @Autowired
     public MessageServiceImpl(MessageRepository messageRepository, CassandraOperations operations) {
         this.messageRepository = messageRepository;
         this.operations = operations;
     }
 
+    // --public methods--
     @Override
     public Message save(Message message) {
         InsertOptions insertOptions = InsertOptions.builder().ttl(300).build();

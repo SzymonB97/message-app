@@ -9,6 +9,7 @@ import pl.sborowy.messageApp.domain.Message;
 @Component
 public class MessageFormToMessage implements Converter<MessageForm, Message> {
 
+    // --public methods--
     @Override
     public Message convert(MessageForm messageForm) {
         Message message = new Message();
